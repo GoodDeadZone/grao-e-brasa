@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Grão & Brasa – Cardápio Mineiro</title>
+<title>Grão & Brasa – Cozinha Mineira</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--m:#3d1f0d;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--vd:#27ae60;--vm:#e74c3c;--az:#3498db;}
@@ -28,20 +28,20 @@ body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100
 .f-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top, var(--cr) 90%, transparent);z-index:150}
 .btn-main{background:var(--m);color:var(--dou);border:none;padding:18px;width:100%;border-radius:16px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;justify-content:space-between}
 input, select, textarea { width:100%; padding:14px; margin-top:10px; border-radius:12px; border:1px solid #ccc; font-family:inherit; outline:none; font-size: 1rem; }
-label { font-size: 0.85rem; font-weight: bold; margin-top: 15px; display: block; color: var(--m2); }
+label { font-size: 0.85rem; font-weight: bold; margin-top: 15px; display: block; }
 </style>
 </head>
 <body>
 
 <div id="s-loading" class="screen active" style="background:var(--m);color:var(--dou);align-items:center;justify-content:center;text-align:center">
   <h1 style="font-family:'Playfair Display';font-size:2.5rem">Grão & Brasa</h1>
-  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">O TEMPERO ESTÁ QUASE PRONTO...</p>
+  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">ATUALIZANDO CARDÁPIO...</p>
 </div>
 
 <div id="s-login" class="screen" style="background:var(--m);align-items:center;justify-content:center;padding:20px">
   <div style="background:var(--cr);padding:40px 30px;border-radius:24px;text-align:center;width:100%;max-width:360px">
     <h2 style="font-family:'Playfair Display';margin-bottom:10px">Seja Bem-vindo</h2>
-    <input type="text" id="in-name" placeholder="Como podemos te chamar?">
+    <input type="text" id="in-name" placeholder="Seu nome">
     <button onclick="doLogin()" style="width:100%;padding:18px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:20px;cursor:pointer">Ver Cardápio</button>
     <div style="font-size:0.6rem;opacity:0.5;margin-top:15px">Grão & Brasa | CNPJ: 64.998.762/0001-01</div>
   </div>
@@ -70,10 +70,6 @@ label { font-size: 0.85rem; font-weight: bold; margin-top: 15px; display: block;
     <div id="form-delivery" style="display:none; background:white; padding:15px; border-radius:15px; margin-bottom:15px; border:1px solid var(--car)">
         <h4 style="font-family:'Playfair Display'">Endereço de Entrega</h4>
         <input type="text" id="del-end" placeholder="Rua, Número e Bairro">
-    </div>
-
-    <div style="background:var(--m);color:var(--cr);padding:15px;border-radius:12px;font-size:0.8rem;margin-bottom:15px">
-        <b>🥘 Acompanhamentos do PF:</b> Arroz (Branco ou Pequi), Feijão (Tropeiro ou Tutu), Couve, Farofa e Salada.
     </div>
 
     <div id="menu-container"></div>
@@ -120,9 +116,9 @@ let cart = []; let subtotal = 0; let tipoPedido = 'local';
 const mesa = new URLSearchParams(window.location.search).get('mesa') || 'Mesa_Balcao';
 
 const produtos = [
-    {n:"PF Simples", p:20.00, d:"1 carne do dia + acompanhamentos mineiros.", c:"Pratos"},
-    {n:"PF Completo", p:28.00, d:"2 carnes do dia + acompanhamentos mineiros.", c:"Pratos"},
-    {n:"Pudim de Leite", p:8.00, d:"Tradicional e cremoso.", c:"Doces"},
+    {n:"PF Simples", p:20.00, d:"1 carne do dia + guarnições mineiras.", c:"Pratos"},
+    {n:"PF Completo", p:28.00, d:"2 carnes do dia + guarnições mineiras.", c:"Pratos"},
+    {n:"Pudim de Leite Mineiro", p:8.00, d:"Tradicional e cremoso.", c:"Doces"},
     {n:"Doce de Leite c/ Queijo", p:9.00, d:"Clássico de Minas.", c:"Doces"},
     {n:"Limonada Suíça", p:10.00, d:"Com leite condensado.", c:"Bebidas"},
     {n:"Suco Natural", p:7.00, d:"Laranja, Limão ou Abacaxi.", c:"Bebidas"},
