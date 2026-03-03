@@ -6,56 +6,62 @@
 <title>Grão & Brasa – Cardápio Mineiro</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--m:#3d1f0d;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--vd:#27ae60;--vm:#e74c3c;}
+:root{--m:#3d1f0d;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--vd:#27ae60;--vm:#e74c3c;--az:#3498db;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100vh;overflow-x:hidden}
 .screen{display:none;min-height:100vh;flex-direction:column}
 .screen.active{display:flex}
 
-/* TELAS INICIAIS */
-#s-loading{background:var(--m);align-items:center;justify-content:center;color:var(--dou);text-align:center}
-#s-login{background:var(--m);align-items:center;justify-content:center;padding:30px}
+/* CABEÇALHO */
+.topbar{background:var(--m);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.tb-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--dou)}
 
-/* HEADER E ABAS */
-.topbar{background:var(--m);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+/* ABAS DELIVERY/LOCAL */
 .delivery-tabs{display:flex;background:var(--m);margin:15px;border-radius:12px;overflow:hidden;border:1px solid var(--car)}
 .tab-btn{flex:1;padding:12px;border:none;background:var(--m);color:white;font-weight:bold;cursor:pointer}
-.tab-btn.active{background:var(--car)}
+.tab-btn.active{background:var(--car);color:white}
 
-/* CARDÁPIO */
+/* CARDÁPIO E ITENS */
 .menu-body{padding:0 16px 180px 16px}
 .section-title{font-family:'Playfair Display';font-size:1.4rem;margin:25px 0 10px;border-bottom:2px solid var(--car);display:inline-block}
 .item-card{background:white;border-radius:18px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 10px rgba(0,0,0,0.05)}
 .item-info{flex:1;padding-right:10px}
-.item-name{font-weight:bold;font-size:1.1rem;margin-bottom:3px}
-.item-desc{font-size:0.75rem;color:#666;line-height:1.2}
-.item-price{color:var(--car);font-weight:bold;display:block;margin-top:5px}
+.item-name{font-weight:bold;font-size:1.1rem;margin-bottom:2px}
+.item-desc{font-size:0.75rem;color:#666;line-height:1.3;margin-bottom:5px;display:block}
+.item-price{color:var(--car);font-weight:bold;font-size:1rem}
 .btn-add{background:var(--m);color:white;border:none;padding:10px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 
-/* RODAPÉ FIXO */
+/* STATUS E PIX */
+#status-box { display:none; margin:15px; padding:18px; border-radius:15px; text-align:center; color:white; font-weight:bold; animation: fadeIn 0.5s; font-size: 0.9rem;}
+#pix-area { display:none; background:white; padding:20px; border-radius:15px; margin-bottom:15px; border:2px solid var(--dou); text-align:center; }
+
 .f-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top, var(--cr) 80%, transparent);z-index:150}
 .btn-main{background:var(--m);color:var(--dou);border:none;padding:18px;width:100%;border-radius:16px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;justify-content:space-between}
-.btn-main:disabled{background:#999;opacity:0.6}
+input, select, textarea { width:100%; padding:12px; margin-top:8px; border-radius:8px; border:1px solid #ccc; font-family:inherit; outline:none; }
+
+@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
 </style>
 </head>
 <body>
 
-<div id="s-loading" class="screen active">
+<div id="s-loading" class="screen active" style="background:var(--m);color:var(--dou);align-items:center;justify-content:center;text-align:center">
   <h1 style="font-family:'Playfair Display';font-size:2.5rem">Grão & Brasa</h1>
-  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">COZINHA MINEIRA DE RAIZ...</p>
+  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">SABOR MINEIRO DE RAIZ...</p>
 </div>
 
-<div id="s-login" class="screen">
+<div id="s-login" class="screen" style="background:var(--m);align-items:center;justify-content:center;padding:30px">
   <div style="background:var(--cr);padding:40px 30px;border-radius:24px;text-align:center;width:100%;max-width:360px">
-    <h2 style="font-family:'Playfair Display';margin-bottom:20px">Identifique-se</h2>
-    <input type="text" id="in-name" placeholder="Seu nome" style="width:100%;padding:15px;border-radius:12px;border:1px solid #ddd;outline:none">
-    <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:15px">Entrar no Cardápio</button>
+    <h2 style="font-family:'Playfair Display';margin-bottom:10px">Seja Bem-vindo</h2>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:20px">Identifique-se para ver o cardápio</p>
+    <input type="text" id="in-name" placeholder="Seu nome">
+    <input type="text" id="in-tel" placeholder="Seu WhatsApp" style="margin-top:10px">
+    <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:20px">Entrar</button>
   </div>
 </div>
 
 <div id="s-menu" class="screen">
   <div class="topbar">
-    <div style="font-family:'Playfair Display';color:var(--dou);font-weight:900">Grão & Brasa</div>
+    <div class="tb-title">Grão & Brasa</div>
     <div id="mesa-label" style="color:white;font-size:.8rem;background:var(--car);padding:4px 10px;border-radius:8px">Mesa --</div>
   </div>
 
@@ -65,41 +71,54 @@ body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100
   </div>
 
   <div class="menu-body">
-    <div id="form-delivery" style="display:none;background:white;padding:15px;border-radius:15px;margin-bottom:15px;border:1px solid #e8d5b0">
-        <input type="text" id="del-end" placeholder="Endereço Completo para Entrega" style="width:100%;padding:12px;border-radius:8px;border:1px solid #ccc">
+    <div id="status-box"></div>
+
+    <div id="pix-area">
+        <h3 style="font-family:'Playfair Display'">Confirmar PIX</h3>
+        <p style="font-size:0.8rem;margin:10px 0">Chave: <b>31999999999</b></p>
+        <button onclick="navigator.clipboard.writeText('31999999999');alert('Chave PIX Copiada!')" style="background:var(--m);color:var(--dou);border:none;padding:10px;border-radius:8px;font-weight:bold;cursor:pointer">Copiar Chave</button>
     </div>
 
-    <div style="background:var(--m);color:var(--cr);padding:15px;border-radius:12px;font-size:0.8rem;margin-bottom:20px">
-        <b>🥘 Todo PF acompanha:</b> Arroz (branco ou pequi), Feijão (tropeiro ou tutu), Couve com alho, Farofa de torresmo e Salada.
+    <div id="form-delivery" style="display:none; background:white; padding:15px; border-radius:15px; margin-bottom:15px; border:1px solid var(--car)">
+        <h4 style="font-family:'Playfair Display'">Endereço de Entrega</h4>
+        <input type="text" id="del-end" placeholder="Rua, Número e Bairro">
+        <input type="text" id="del-ref" placeholder="Ponto de Referência" style="margin-top:10px">
+    </div>
+
+    <div style="background:var(--m);color:var(--cr);padding:15px;border-radius:12px;font-size:0.8rem;margin-bottom:15px">
+        <b>🥘 Todo PF acompanha:</b> Arroz (branco ou pequi), Feijão (tropeiro ou tutu), Couve refogada com alho, Farofa de torresmo e Salada da estação.
     </div>
 
     <div class="section-title">Pratos do Dia</div>
     <div id="lista-pfs"></div>
-
+    
     <div class="section-title">Doces & Sobremesas</div>
     <div id="lista-doces"></div>
-
-    <div class="section-title">Sucos & Bebidas</div>
+    
+    <div class="section-title">Bebidas & Sucos</div>
     <div id="lista-bebidas"></div>
 
     <div style="background:white;padding:15px;border-radius:15px;margin-top:20px;border:1px solid #ddd">
-        <label style="font-weight:bold;font-size:0.8rem">Observações (Carne escolhida, sem cebola...):</label>
-        <textarea id="obs" placeholder="Escreva aqui..." style="width:100%;height:60px;padding:10px;border-radius:8px;border:1px solid #ccc;margin-top:5px;font-family:inherit"></textarea>
+        <label style="font-weight:bold;font-size:0.8rem">📝 Alguma observação?</label>
+        <textarea id="obs" placeholder="Ex: Qual carne do dia você prefere? Sem cebola no tutu..."></textarea>
         
-        <label style="font-weight:bold;font-size:0.8rem;margin-top:10px;display:block">Forma de Pagamento:</label>
-        <select id="sel-pag" style="width:100%;padding:12px;margin-top:5px;border-radius:8px;border:1px solid #ccc">
-            <option value="pix">PIX (Pagar agora)</option>
-            <option value="cartao">Cartão (Levamos a maquininha)</option>
+        <label style="font-weight:bold;font-size:0.8rem;margin-top:15px;display:block">💳 Forma de Pagamento:</label>
+        <select id="sel-pag">
+            <option value="pix">PIX (Pagar Agora)</option>
+            <option value="cartao">Cartão (Levamos maquininha)</option>
             <option value="dinheiro">Dinheiro</option>
         </select>
     </div>
-    <div id="status-aviso" style="margin-top:20px;padding:15px;border-radius:12px;text-align:center;display:none;color:white;font-weight:bold"></div>
   </div>
 
   <div class="f-bar">
+    <div id="resumo-precos" style="display:none;width:100%;padding:0 10px 10px 10px">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem"><span>Subtotal:</span> <span id="txt-sub">R$ 0,00</span></div>
+        <div id="taxa-linha" style="display:none;justify-content:space-between;font-size:0.8rem;color:var(--vm)"><span>Taxa de Entrega:</span> <span>R$ 7,00</span></div>
+    </div>
     <button class="btn-main" id="btn-finalizar" onclick="finalizar()">
-        <span>Finalizar Pedido</span>
-        <span id="txt-total">R$ 0,00</span>
+      <span>Confirmar Pedido</span>
+      <span id="txt-total">R$ 0,00</span>
     </button>
   </div>
 </div>
@@ -115,59 +134,54 @@ const TAXA = 7.00;
 let cart = []; let subtotal = 0; let tipoPedido = 'local'; let aberto = false;
 const mesa = new URLSearchParams(window.location.search).get('mesa') || 'Mesa_Balcao';
 
-const menuData = {
-    pfs: [
-        {n:"PF Simples (1 carne)", p:20.00, d:"Acompanha arroz, feijão, couve, farofa e salada "},
-        {n:"PF Completo (2 carnes)", p:28.00, d:"Acompanha arroz, feijão, couve, farofa e salada "}
-    ],
-    doces: [
-        {n:"Pudim de Leite Mineiro", p:8.00, d:"Receita tradicional e cremosa "},
-        {n:"Doce de Leite c/ Queijo", p:9.00, d:"Clássico mineiro com queijo meia cura "},
-        {n:"Canjica c/ Amendoim", p:8.00, d:"Milho branco com amendoim torrado "},
-        {n:"Bolo de Fubá c/ Goiabada", p:7.00, d:"Quentinho com cobertura de goiabada cascão "},
-        {n:"Arroz Doce Cremoso", p:7.00, d:"Com leite condensado e canela "},
-        {n:"Cocada Mineira", p:6.00, d:"Cocada mole, receita de vó "}
-    ],
-    bebidas: [
-        {n:"Suco Natural 400ml", p:7.00, d:"Laranja, limão, abacaxi, goiaba, manga ou maracujá "},
-        {n:"Vitamina 400ml", p:9.00, d:"Banana com leite, mamão ou abacate com mel "},
-        {n:"Café Coado na Hora", p:4.00, d:"Café mineiro em coador de pano "},
-        {n:"Café com Leite", p:6.00, d:"Quente ou frio "},
-        {n:"Limonada Suíça", p:10.00, d:"Refrescante com leite condensado "},
-        {n:"Refrigerante Lata", p:5.00, d:"Diversos sabores "},
-        {n:"Água Mineral", p:3.00, d:"Com ou sem gás "}
-    ]
-};
+const produtos = [
+    {n:"PF Simples", p:20.00, d:"1 carne + acompanhamentos mineiros completos.", c:"Pratos"},
+    {n:"PF Completo", p:28.00, d:"2 carnes + acompanhamentos mineiros completos.", c:"Pratos"},
+    
+    {n:"Pudim de Leite Mineiro", p:8.00, d:"Receita tradicional, cremoso e calda artesanal.", c:"Doces"},
+    {n:"Doce de Leite c/ Queijo", p:9.00, d:"Meia cura com biscoito de polvilho.", c:"Doces"},
+    {n:"Canjica com Amendoim", p:8.00, d:"Milho branco, leite, canela e amendoim torrado.", c:"Doces"},
+    {n:"Bolo de Fubá c/ Goiabada", p:7.00, d:"Quentinho com cobertura de goiabada cascão.", c:"Doces"},
+    {n:"Arroz Doce Cremoso", p:7.00, d:"Com leite condensado, coco e canela.", c:"Doces"},
+    {n:"Cocada Mineira", p:6.00, d:"Cocada mole com leite e manteiga (receita de vó).", c:"Doces"},
+
+    {n:"Suco Natural 400ml", p:7.00, d:"Laranja, Limão, Abacaxi, Goiaba, Manga ou Maracujá.", c:"Bebidas"},
+    {n:"Vitamina 400ml", p:9.00, d:"Banana, Mamão ou Abacate com Mel.", c:"Bebidas"},
+    {n:"Limonada Suíça", p:10.00, d:"Refrescante com leite condensado e creme de leite.", c:"Bebidas"},
+    {n:"Refrigerante Lata", p:5.00, d:"Coca-cola, Guaraná, Fanta ou Sprite.", c:"Bebidas"},
+    {n:"Água Mineral", p:3.00, d:"Com ou sem gás.", c:"Bebidas"},
+    {n:"Café Coado na Hora", p:4.00, d:"Café mineiro em coador de pano.", c:"Bebidas"},
+    {n:"Café com Leite", p:6.00, d:"Tradicional mistura de café e leite quente.", c:"Bebidas"}
+];
 
 function render() {
-    const r = (l, id) => document.getElementById(id).innerHTML = l.map(it => `
+    const f = (c, id) => document.getElementById(id).innerHTML = produtos.filter(p=>p.c===c).map(it => `
         <div class="item-card">
             <div class="item-info">
                 <div class="item-name">${it.n}</div>
-                <div class="item-desc">${it.d}</div>
+                <span class="item-desc">${it.d}</span>
                 <span class="item-price">R$ ${it.p.toFixed(2)}</span>
             </div>
             <button class="btn-add" onclick="add('${it.n}', ${it.p})">+</button>
         </div>`).join('');
-    r(menuData.pfs, 'lista-pfs');
-    r(menuData.doces, 'lista-doces');
-    r(menuData.bebidas, 'lista-bebidas');
+    f("Pratos", "lista-pfs"); f("Doces", "lista-doces"); f("Bebidas", "lista-bebidas");
 }
 
 onValue(ref(db, 'configuracoes/caixa'), (snap) => {
     aberto = snap.val()?.aberto || false;
     document.getElementById('btn-finalizar').disabled = !aberto;
-    const s = document.getElementById('status-aviso');
     if(!aberto) {
-        s.style.display='block'; s.style.background='#e74c3c'; s.innerText="🔴 Restaurante Fechado no momento";
-    } else s.style.display='none';
+        const s = document.getElementById('status-box');
+        s.style.display='block'; s.style.background='var(--vm)'; s.innerText="LOJA FECHADA NO MOMENTO";
+    }
 });
 
 window.doLogin = () => {
-    if(!document.getElementById('in-name').value) return alert("Diga o seu nome!");
+    if(!document.getElementById('in-name').value) return alert("Por favor, diga seu nome.");
+    document.getElementById('s-loading').style.display='none';
     document.getElementById('s-login').style.display='none';
     document.getElementById('s-menu').style.display='flex';
-    document.getElementById('mesa-label').innerText = "Mesa: " + mesa.split('_')[1];
+    document.getElementById('mesa-label').innerText = "Mesa: " + (mesa.includes('_') ? mesa.split('_')[1] : mesa);
     render();
 };
 
@@ -187,30 +201,47 @@ window.add = (n, p) => {
 
 function updTotal() {
     let final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
+    document.getElementById('resumo-precos').style.display = subtotal > 0 ? 'block' : 'none';
+    document.getElementById('txt-sub').innerText = "R$ " + subtotal.toFixed(2).replace('.',',');
+    document.getElementById('taxa-linha').style.display = (tipoPedido === 'delivery' && subtotal > 0) ? 'flex' : 'none';
     document.getElementById('txt-total').innerText = "R$ " + final.toFixed(2).replace('.',',');
 }
 
 window.finalizar = async () => {
-    if(cart.length === 0) return alert("Escolha o seu prato!");
+    if(cart.length === 0) return alert("Seu carrinho está vazio!");
+    const final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
     const pRef = push(ref(db, 'pedidos'));
     await set(pRef, {
         cliente: document.getElementById('in-name').value,
         mesa: tipoPedido==='delivery'?'Delivery':mesa,
-        tipo: tipoPedido,
-        itens: cart,
-        total: (tipoPedido==='delivery'?subtotal+TAXA:subtotal),
-        status: 'aguardando_pagamento',
-        obs: document.getElementById('obs').value,
-        metodoPag: document.getElementById('sel-pag').value,
-        hora: new Date().toISOString()
+        tipo: tipoPedido, itens: cart, total: final, status: 'aguardando_pagamento',
+        obs: document.getElementById('obs').value, metodoPag: document.getElementById('sel-pag').value,
+        hora: new Date().toISOString(), endereco: document.getElementById('del-end').value || ''
     });
-    alert("Pedido enviado com sucesso!");
-    cart=[]; subtotal=0; updTotal();
+    if(document.getElementById('sel-pag').value === 'pix') document.getElementById('pix-area').style.display='block';
+    localStorage.setItem('gb_last_id', pRef.key);
+    cart = []; subtotal = 0; updTotal();
+    rastrear();
 };
 
-setTimeout(()=> {
+function rastrear() {
+    const id = localStorage.getItem('gb_last_id');
+    if(!id) return;
+    onValue(ref(db, 'pedidos/' + id), (snap) => {
+        const p = snap.val(); if(!p) return;
+        const box = document.getElementById('status-box');
+        box.style.display = 'block';
+        const cores = { aguardando_pagamento:'#e74c3c', novo:'#f39c12', preparando:'#3498db', pronto:'#27ae60', em_rota:'#9b59b6', finalizado:'#2ecc71', cancelado:'#333' };
+        const textos = { aguardando_pagamento:'⏳ AGUARDANDO PAGAMENTO', novo:'✅ PAGO / NA COZINHA', preparando:'🔥 NO FOGO', pronto:'🍽️ PRONTO!', em_rota:'🛵 SAIU PARA ENTREGA', finalizado:'🤎 BOM APETITE!', cancelado:'❌ PEDIDO CANCELADO' };
+        box.style.background = cores[p.status];
+        box.innerText = textos[p.status];
+        if(p.status !== 'aguardando_pagamento') document.getElementById('pix-area').style.display='none';
+    });
+}
+
+setTimeout(() => {
     document.getElementById('s-loading').style.display='none';
-    document.getElementById('s-login').style.display='flex';
+    rastrear();
 }, 1500);
 </script>
 </body>
