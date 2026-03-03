@@ -9,18 +9,18 @@
 :root{--m:#3d1f0d;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--vd:#27ae60;--vm:#e74c3c;--az:#3498db;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100vh;overflow-x:hidden}
-.screen{display:none;min-height:100vh;flex-direction:column}
-.screen.active{display:flex}
+.screen{display:none;min-height:100vh;flex-direction:column;opacity:0;transition:opacity 0.4s;}
+.screen.active{display:flex;opacity:1}
 
+/* CABEÇALHO */
 .topbar{background:var(--m);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
 .tb-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--dou)}
 
-.delivery-tabs{display:flex;background:var(--m);margin:15px;border-radius:12px;overflow:hidden;border:1px solid var(--car)}
-.tab-btn{flex:1;padding:12px;border:none;background:var(--m);color:white;font-weight:bold;cursor:pointer}
-.tab-btn.active{background:var(--car);color:white}
+/* LOGIN */
+.login-box{background:var(--cr);padding:40px 30px;border-radius:24px;text-align:center;width:100%;max-width:360px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
 
+/* CARDÁPIO */
 .menu-body{padding:0 16px 220px 16px}
-.section-title{font-family:'Playfair Display';font-size:1.4rem;margin:25px 0 10px;border-bottom:2px solid var(--car);display:inline-block}
 .item-card{background:white;border-radius:18px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 10px rgba(0,0,0,0.05)}
 .item-info{flex:1;padding-right:10px}
 .item-name{font-weight:bold;font-size:1.1rem;margin-bottom:2px}
@@ -28,91 +28,68 @@ body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100
 .item-price{color:var(--car);font-weight:bold;font-size:1rem}
 .btn-add{background:var(--m);color:white;border:none;padding:10px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
 
-#status-box { display:none; margin:15px; padding:18px; border-radius:15px; text-align:center; color:white; font-weight:bold; font-size: 0.9rem;}
-#pix-area { display:none; background:white; padding:20px; border-radius:15px; margin-bottom:15px; border:2px solid var(--dou); text-align:center; animation: fadeIn 0.5s;}
-
-.f-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top, var(--cr) 80%, transparent);z-index:150}
+/* COMPONENTES */
+.status-bar{margin:15px;padding:15px;border-radius:12px;text-align:center;color:white;font-weight:bold;font-size:0.85rem}
+.pix-box{background:white;padding:20px;border-radius:15px;margin-bottom:15px;border:2px solid var(--dou);text-align:center}
+.f-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top, var(--cr) 90%, transparent);z-index:150}
 .btn-main{background:var(--m);color:var(--dou);border:none;padding:18px;width:100%;border-radius:16px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;justify-content:space-between}
-input, select, textarea { width:100%; padding:12px; margin-top:8px; border-radius:8px; border:1px solid #ccc; font-family:inherit; outline:none; }
-.cnpj-footer{font-size:0.65rem; opacity:0.7; margin-top:15px; text-align:center}
-
-@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+input, select, textarea { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ccc; font-family:inherit; outline:none; }
 </style>
 </head>
 <body>
 
 <div id="s-loading" class="screen active" style="background:var(--m);color:var(--dou);align-items:center;justify-content:center;text-align:center">
   <h1 style="font-family:'Playfair Display';font-size:2.5rem">Grão & Brasa</h1>
-  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">CARREGANDO O TEMPERO...</p>
+  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">PREPARANDO O FOGÃO...</p>
 </div>
 
-<div id="s-login" class="screen" style="background:var(--m);align-items:center;justify-content:center;padding:30px">
-  <div style="background:var(--cr);padding:40px 30px;border-radius:24px;text-align:center;width:100%;max-width:360px">
-    <h2 style="font-family:'Playfair Display';margin-bottom:10px">Grão & Brasa</h2>
-    <p style="font-size:0.8rem;color:#666;margin-bottom:20px">Betim - Minas Gerais</p>
+<div id="s-login" class="screen" style="background:var(--m);align-items:center;justify-content:center;padding:20px">
+  <div class="login-box">
+    <h2 style="font-family:'Playfair Display';margin-bottom:10px">Seja Bem-vindo</h2>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:20px">Grão & Brasa – Betim/MG</p>
     <input type="text" id="in-name" placeholder="Seu nome">
-    <input type="text" id="in-tel" placeholder="Seu WhatsApp" style="margin-top:10px">
-    <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:20px">Ver Cardápio</button>
-    <div class="cnpj-footer">CNPJ: 64.998.762/0001-01</div>
+    <input type="text" id="in-tel" placeholder="Seu WhatsApp (Opcional)">
+    <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:20px;cursor:pointer">Entrar no Cardápio</button>
+    <div style="font-size:0.6rem;opacity:0.5;margin-top:15px">CNPJ: 64.998.762/0001-01</div>
   </div>
 </div>
 
 <div id="s-menu" class="screen">
   <div class="topbar">
     <div class="tb-title">Grão & Brasa</div>
-    <div id="mesa-label" style="color:white;font-size:.8rem;background:var(--car);padding:4px 10px;border-radius:8px">Mesa --</div>
+    <div id="mesa-label" style="color:white;font-size:.7rem;background:var(--car);padding:4px 10px;border-radius:8px">Mesa --</div>
   </div>
 
-  <div class="delivery-tabs">
-    <button class="tab-btn active" id="btn-local" onclick="toggleTipo('local')">No Restaurante</button>
-    <button class="tab-btn" id="btn-delivery" onclick="toggleTipo('delivery')">Delivery</button>
+  <div style="display:flex;background:var(--m);margin:15px;border-radius:12px;overflow:hidden;border:1px solid var(--car)">
+    <button class="tab-btn active" id="btn-local" onclick="toggleTipo('local')" style="flex:1;padding:12px;border:none;background:var(--car);color:white;font-weight:bold">No Restaurante</button>
+    <button class="tab-btn" id="btn-delivery" onclick="toggleTipo('delivery')" style="flex:1;padding:12px;border:none;background:var(--m);color:white;font-weight:bold">Delivery</button>
   </div>
 
   <div class="menu-body">
-    <div id="status-box"></div>
+    <div id="status-box" class="status-bar" style="display:none"></div>
 
-    <div id="pix-area">
-        <h3 style="font-family:'Playfair Display'; color:var(--m)">Pagar via PIX</h3>
-        <p style="font-size:0.85rem;margin:10px 0; color:#555">Chave CNPJ: <br><b style="font-size:1.1rem">64.998.762/0001-01</b></p>
-        <button onclick="copyPix()" style="background:var(--m);color:var(--dou);border:none;padding:12px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%">Copiar Chave CNPJ</button>
-        <p style="font-size:0.65rem; margin-top:10px; color:#888">Após o pagamento, seu pedido entrará em preparo.</p>
+    <div id="pix-area" class="pix-box" style="display:none">
+        <h3 style="font-family:'Playfair Display'">Pagar via PIX</h3>
+        <p style="font-size:0.85rem;margin:10px 0">Chave CNPJ: <b>64.998.762/0001-01</b></p>
+        <button onclick="copyPix()" style="background:var(--m);color:var(--dou);border:none;padding:12px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%">Copiar Chave</button>
     </div>
 
     <div id="form-delivery" style="display:none; background:white; padding:15px; border-radius:15px; margin-bottom:15px; border:1px solid var(--car)">
-        <h4 style="font-family:'Playfair Display'">Onde entregamos?</h4>
+        <h4 style="font-family:'Playfair Display'">Endereço</h4>
         <input type="text" id="del-end" placeholder="Rua, Número e Bairro">
-        <input type="text" id="del-ref" placeholder="Ponto de Referência (Opcional)" style="margin-top:10px">
     </div>
 
     <div style="background:var(--m);color:var(--cr);padding:15px;border-radius:12px;font-size:0.8rem;margin-bottom:15px">
-        <b>🥘 Acompanhamentos do Dia:</b> Arroz (Branco ou Pequi), Feijão (Tropeiro ou Tutu), Couve com alho, Farofa de Torresmo e Salada Fresca.
+        <b>🥘 Acompanhamentos:</b> Arroz (Branco ou Pequi), Feijão (Tropeiro ou Tutu), Couve, Farofa e Salada.
     </div>
 
-    <div class="section-title">Nossos PFs</div>
-    <div id="lista-pfs"></div>
-    <div class="section-title">Sobremesas da Roça</div>
-    <div id="lista-doces"></div>
-    <div class="section-title">Bebidas Geladas</div>
-    <div id="lista-bebidas"></div>
-
-    <div style="background:white;padding:15px;border-radius:15px;margin-top:20px;border:1px solid #ddd; text-align: center">
-        <label style="font-weight:bold;font-size:0.8rem">📝 Alguma preferência ou observação?</label>
-        <textarea id="obs" placeholder="Ex: Carne de porco, arroz com pequi, sem cebola..."></textarea>
-        
-        <label style="font-weight:bold;font-size:0.8rem;margin-top:15px;display:block">💳 Forma de Pagamento:</label>
-        <select id="sel-pag">
-            <option value="pix">PIX (Chave CNPJ)</option>
-            <option value="cartao">Cartão (Levamos a maquininha)</option>
-            <option value="dinheiro">Dinheiro</option>
-        </select>
-        <div class="cnpj-footer" style="margin-top:20px">Grão & Brasa | CNPJ: 64.998.762/0001-01</div>
-    </div>
+    <div id="menu-container"></div>
   </div>
 
   <div class="f-bar">
-    <div id="resumo-precos" style="display:none;width:100%;padding:0 10px 10px 10px">
-        <div style="display:flex;justify-content:space-between;font-size:0.8rem"><span>Valor dos itens:</span> <span id="txt-sub">R$ 0,00</span></div>
-        <div id="taxa-linha" style="display:none;justify-content:space-between;font-size:0.8rem;color:var(--vm)"><span>Taxa de Entrega:</span> <span>R$ 7,00</span></div>
+    <div id="resumo" style="display:none;width:100%;margin-bottom:10px;padding:0 10px;font-size:0.8rem">
+        <div style="display:flex;justify-content:space-between"><span>Itens:</span> <span id="txt-sub">R$ 0,00</span></div>
+        <div id="taxa-linha" style="display:none;justify-content:space-between;color:var(--vm)"><span>Taxa Delivery:</span> <span>R$ 7,00</span></div>
     </div>
     <button class="btn-main" id="btn-finalizar" onclick="finalizar()">
       <span>Enviar Pedido</span>
@@ -125,114 +102,128 @@ input, select, textarea { width:100%; padding:12px; margin-top:8px; border-radiu
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-const app = initializeApp({databaseURL: "https://grao-e-brasa-ef12e-default-rtdb.firebaseio.com"});
-const db = getDatabase(app);
+// Configuração Master
+const firebaseConfig = { databaseURL: "https://grao-e-brasa-ef12e-default-rtdb.firebaseio.com" };
+let db;
+try {
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+} catch (e) { console.error("Erro Firebase:", e); }
 
-const TAXA = 7.00; const CNPJ_PIX = "64.998.762/0001-01";
-let cart = []; let subtotal = 0; let tipoPedido = 'local'; let aberto = false;
+const TAXA = 7.00;
+let cart = []; let subtotal = 0; let tipoPedido = 'local';
 const mesa = new URLSearchParams(window.location.search).get('mesa') || 'Mesa_Balcao';
 
 const produtos = [
-    {n:"PF Simples", p:20.00, d:"1 carne do dia + todos os acompanhamentos mineiros.", c:"Pratos"},
-    {n:"PF Completo", p:28.00, d:"2 carnes do dia + todos os acompanhamentos mineiros.", c:"Pratos"},
-    {n:"Pudim de Leite Mineiro", p:8.00, d:"Receita tradicional, cremoso e com calda artesanal.", c:"Doces"},
-    {n:"Doce de Leite c/ Queijo", p:9.00, d:"Queijo meia cura com o melhor doce de leite regional.", c:"Doces"},
-    {n:"Limonada Suíça", p:10.00, d:"Refrescante, feita na hora com leite condensado.", c:"Bebidas"},
-    {n:"Suco Natural 400ml", p:7.00, d:"Laranja, Limão, Abacaxi ou Maracujá.", c:"Bebidas"},
-    {n:"Refrigerante Lata", p:5.00, d:"Coca-cola, Guaraná ou Fanta.", c:"Bebidas"},
+    {n:"PF Simples", p:20.00, d:"1 carne do dia + acompanhamentos.", c:"Pratos"},
+    {n:"PF Completo", p:28.00, d:"2 carnes do dia + acompanhamentos.", c:"Pratos"},
+    {n:"Pudim de Leite", p:8.00, d:"Tradicional mineiro.", c:"Doces"},
+    {n:"Limonada Suíça", p:10.00, d:"Com leite condensado.", c:"Bebidas"},
+    {n:"Suco Natural", p:7.00, d:"Laranja ou Limão.", c:"Bebidas"},
     {n:"Água Mineral", p:3.00, d:"Com ou sem gás.", c:"Bebidas"}
 ];
 
-function render() {
-    const f = (c, id) => document.getElementById(id).innerHTML = produtos.filter(p=>p.c===c).map(it => `
-        <div class="item-card">
-            <div class="item-info">
-                <div class="item-name">${it.n}</div>
-                <span class="item-desc">${it.d}</span>
-                <span class="item-price">R$ ${it.p.toFixed(2)}</span>
-            </div>
-            <button class="btn-add" onclick="add('${it.n}', ${it.p})">+</button>
-        </div>`).join('');
-    f("Pratos", "lista-pfs"); f("Doces", "lista-doces"); f("Bebidas", "lista-bebidas");
+// Funções de Interface
+window.doLogin = () => {
+    if(!document.getElementById('in-name').value) return alert("Por favor, digite seu nome!");
+    showScreen('s-menu');
+    document.getElementById('mesa-label').innerText = "Mesa: " + (mesa.includes('_') ? mesa.split('_')[1] : mesa);
+    renderMenu();
+};
+
+function renderMenu() {
+    let html = "";
+    const cats = ["Pratos", "Doces", "Bebidas"];
+    cats.forEach(cat => {
+        html += `<div style="font-family:'Playfair Display';font-size:1.4rem;margin:20px 0 10px;border-bottom:2px solid var(--car);display:inline-block">${cat}</div>`;
+        produtos.filter(p => p.c === cat).forEach(it => {
+            html += `
+                <div class="item-card">
+                    <div class="item-info">
+                        <div class="item-name">${it.n}</div>
+                        <span class="item-desc">${it.d}</span>
+                        <span class="item-price">R$ ${it.p.toFixed(2)}</span>
+                    </div>
+                    <button class="btn-add" onclick="add('${it.n}', ${it.p})">+</button>
+                </div>`;
+        });
+    });
+    document.getElementById('menu-container').innerHTML = html;
 }
 
-onValue(ref(db, 'configuracoes/caixa'), (snap) => {
-    aberto = snap.val()?.aberto || false;
-    document.getElementById('btn-finalizar').disabled = !aberto;
-    if(!aberto) {
-        const s = document.getElementById('status-box');
-        s.style.display='block'; s.style.background='var(--vm)'; s.innerText="ESTAMOS FECHADOS AGORA. VOLTAMOS EM BREVE!";
-    }
-});
-
-window.doLogin = () => {
-    if(!document.getElementById('in-name').value) return alert("Por favor, informe seu nome.");
-    document.getElementById('s-loading').style.display='none';
-    document.getElementById('s-login').style.display='none';
-    document.getElementById('s-menu').style.display='flex';
-    document.getElementById('mesa-label').innerText = "Mesa: " + (mesa.includes('_') ? mesa.split('_')[1] : mesa);
-    render();
+window.add = (n, p) => {
+    cart.push({nome: n, preco: p});
+    subtotal += p;
+    updTotal();
 };
 
 window.toggleTipo = (t) => {
     tipoPedido = t;
-    document.getElementById('btn-local').classList.toggle('active', t==='local');
-    document.getElementById('btn-delivery').classList.toggle('active', t==='delivery');
-    document.getElementById('form-delivery').style.display = t==='delivery' ? 'block' : 'none';
+    const isDel = t === 'delivery';
+    document.getElementById('btn-local').style.background = isDel ? 'var(--m)' : 'var(--car)';
+    document.getElementById('btn-delivery').style.background = isDel ? 'var(--car)' : 'var(--m)';
+    document.getElementById('form-delivery').style.display = isDel ? 'block' : 'none';
     updTotal();
-};
-
-window.add = (n, p) => { cart.push({nome: n, preco: p}); subtotal += p; updTotal(); };
-
-window.copyPix = () => {
-    navigator.clipboard.writeText(CNPJ_PIX);
-    alert("Chave CNPJ copiada! Agora basta colar no seu banco.");
 };
 
 function updTotal() {
     let final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
-    document.getElementById('resumo-precos').style.display = subtotal > 0 ? 'block' : 'none';
+    document.getElementById('resumo').style.display = subtotal > 0 ? 'block' : 'none';
     document.getElementById('txt-sub').innerText = "R$ " + subtotal.toFixed(2).replace('.',',');
     document.getElementById('taxa-linha').style.display = (tipoPedido === 'delivery' && subtotal > 0) ? 'flex' : 'none';
     document.getElementById('txt-total').innerText = "R$ " + final.toFixed(2).replace('.',',');
 }
 
 window.finalizar = async () => {
-    if(cart.length === 0) return alert("O carrinho está vazio!");
+    if(cart.length === 0) return alert("Seu carrinho está vazio!");
     const final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
-    const pRef = push(ref(db, 'pedidos'));
-    await set(pRef, {
-        cliente: document.getElementById('in-name').value,
-        mesa: tipoPedido==='delivery'?'Delivery':mesa,
-        tipo: tipoPedido, itens: cart, total: final, status: 'aguardando_pagamento',
-        obs: document.getElementById('obs').value, metodoPag: document.getElementById('sel-pag').value,
-        hora: new Date().toISOString(), endereco: document.getElementById('del-end').value || ''
-    });
-    if(document.getElementById('sel-pag').value === 'pix') document.getElementById('pix-area').style.display='block';
-    localStorage.setItem('gb_last_id', pRef.key);
-    cart = []; subtotal = 0; updTotal();
-    rastrear();
+    try {
+        const pRef = push(ref(db, 'pedidos'));
+        await set(pRef, {
+            cliente: document.getElementById('in-name').value,
+            mesa: tipoPedido === 'delivery' ? 'Delivery' : mesa,
+            itens: cart, total: final, status: 'aguardando_pagamento',
+            hora: new Date().toISOString(), endereco: document.getElementById('del-end').value || ''
+        });
+        if(document.getElementById('sel-pag')?.value === 'pix' || true) document.getElementById('pix-area').style.display='block';
+        alert("Pedido enviado! Veja o status no topo da tela.");
+        localStorage.setItem('gb_last_id', pRef.key);
+        cart = []; subtotal = 0; updTotal();
+        rastrear();
+    } catch(e) { alert("Erro ao enviar pedido. Verifique sua internet."); }
+};
+
+window.copyPix = () => {
+    navigator.clipboard.writeText("64.998.762/0001-01");
+    alert("CNPJ Copiado!");
 };
 
 function rastrear() {
     const id = localStorage.getItem('gb_last_id');
-    if(!id) return;
+    if(!id || !db) return;
     onValue(ref(db, 'pedidos/' + id), (snap) => {
         const p = snap.val(); if(!p) return;
         const box = document.getElementById('status-box');
         box.style.display = 'block';
-        const cores = { aguardando_pagamento:'#e74c3c', novo:'#f39c12', preparando:'#3498db', pronto:'#27ae60', em_rota:'#9b59b6', finalizado:'#2ecc71', cancelado:'#333' };
-        const textos = { aguardando_pagamento:'⏳ AGUARDANDO PAGAMENTO VIA PIX', novo:'✅ PAGO! ENVIADO PARA A COZINHA', preparando:'🔥 NO FOGO! SEU PRATO ESTÁ SENDO FEITO', pronto:'🍽️ PRONTO! JÁ VAMOS SERVIR', em_rota:'🛵 SAIU PARA ENTREGA!', finalizado:'🤎 BOM APETITE! OBRIGADO PELA PREFERÊNCIA', cancelado:'❌ PEDIDO CANCELADO' };
-        box.style.background = cores[p.status];
-        box.innerText = textos[p.status];
+        const cores = { aguardando_pagamento:'#e74c3c', novo:'#f39c12', preparando:'#3498db', pronto:'#27ae60', em_rota:'#9b59b6', finalizado:'#2ecc71' };
+        box.style.background = cores[p.status] || '#333';
+        box.innerText = "STATUS: " + p.status.toUpperCase().replace('_',' ');
         if(p.status !== 'aguardando_pagamento') document.getElementById('pix-area').style.display='none';
     });
 }
 
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+// FAIL-SAFE: TIRA O LOADING EM 3 SEGUNDOS NÃO IMPORTA O QUE ACONTEÇA
 setTimeout(() => {
-    document.getElementById('s-loading').style.display='none';
-    rastrear();
-}, 1500);
+    if(document.getElementById('s-loading').classList.contains('active')) {
+        showScreen('s-login');
+        rastrear();
+    }
+}, 3000);
 </script>
 </body>
 </html>
