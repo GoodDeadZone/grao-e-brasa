@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grão & Brasa – Cozinha</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#111;--bg2:#1a1a1a;--bg3:#242424;--brd:#2e2e2e;--dou:#d4a84b;--car:#c8843a;--vd:#27ae60;--am:#f39c12;--az:#3498db;--vm:#e74c3c;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Lora',serif;background:var(--bg);color:#ddd;min-height:100vh;padding:20px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid var(--brd);padding-bottom:15px}
+.h-title{font-family:'Playfair Display';font-size:1.8rem;color:var(--dou)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+
+/* CARD DE PEDIDO */
+.card{background:var(--bg3);border:1px solid var(--brd);border-radius:12px;padding:18px;position:relative;border-left:5px solid transparent}
+.card.novo{border-left-color:var(--am)}
+.card.preparando{border-left-color:var(--az)}
+
+.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.cmesa{font-family:'Playfair Display';font-size:1.4rem;color:var(--dou)}
+
+.citems{margin:15px 0}
+.ci{display:flex;gap:10px;margin-bottom:8px;font-size:1.1rem}
+.cqty{color:var(--car);font-weight:900}
+
+/* DESTAQUES DE OBS E DELIVERY */
+.cobs{background:#111;padding:10px;border-radius:8px;color:var(--am);font-size:.9rem;margin-bottom:15px;border:1px dashed #444}
+.badge-del{background:var(--vm);color:white;padding:4px 8px;border-radius:5px;font-size:.7rem;font-weight:bold;display:inline-block;margin-top:5px}
+
+.ctimer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #333}
+.tv{font-weight:900;font-size:1.1rem}
+.tv.warn{color:var(--vm)}
+
+.cactions{display:flex;gap:8px;margin-top:15px}
+.ab{flex:1;padding:12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;color:white}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="h-title">Grão & Brasa Cozinha</div>
+  <div id="clock" style="color:var(--dou);font-weight:bold">00:00:00</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+const app = initializeApp({
+    apiKey: "AIzaSyBVZof62nwg8DSWiFGWGARbsMwh-AnVCSY",
+    authDomain: "grao-e-brasa-ef12e.firebaseapp.com",
+    databaseURL: "https://grao-e-brasa-ef12e-default-rtdb.firebaseio.com",
+    projectId: "grao-e-brasa-ef12e"
+});
+const db = getDatabase(app);
+
+function getTimer(iso){
+    const diff = Math.floor((new Date() - new Date(iso)) / 1000);
+    const m = Math.floor(diff / 60);
+    const s = diff % 60;
+    return { t: `${m}:${s < 10 ? '0' : ''}${s}`, c: m >= 15 ? 'warn' : '' };
+}
+
+onValue(ref(db, 'pedidos'), (snap) => {
+    const dados = snap.val();
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    if(!dados) return;
+
+    Object.keys(dados).forEach(k => {
+        const p = dados[k];
+        if(p.status === 'novo' || p.status === 'preparando'){
+            const time = getTimer(p.hora);
+            const isDel = p.mesa.includes('Delivery');
+            
+            grid.innerHTML += `
+                <div class="card ${p.status}">
+                    <div class="ctop">
+                        <div class="cmesa">
+                            ${p.mesa.replace('_',' ')}
+                            ${isDel ? '<br><span class="badge-del">🛵 PARA VIAGEM</span>' : ''}
+                        </div>
+                        <div style="font-size:.7rem;color:#888">${new Date(p.hora).toLocaleTimeString()}</div>
+                    </div>
+
+                    <div class="citems">
+                        ${p.itens.map(it => `<div class="ci"><span class="cqty">1x</span><span class="ciname">${it.nome}</span></div>`).join('')}
+                    </div>
+
+                    ${p.obs ? `<div class="cobs">📝 OBS: ${p.obs}</div>` : ''}
+
+                    <div class="ctimer">
+                        <span class="tv ${time.c}">⏱ ${time.t}</span>
+                        <span style="color:var(--vd);font-weight:bold">R$ ${p.total.toFixed(2)}</span>
+                    </div>
+
+                    <div class="cactions">
+                        ${p.status === 'novo' ? 
+                            `<button class="ab" style="background:var(--car)" onclick="upd('${k}','preparando')">🔥 INICIAR</button>` : 
+                            `<button class="ab" style="background:var(--vd)" onclick="upd('${k}','pronto')">✅ PRONTO</button>`
+                        }
+                        <button class="ab" style="background:#333;flex:0.3" onclick="if(confirm('Cancelar?')) upd('${k}','cancelado')">✕</button>
+                    </div>
+                </div>`;
+        }
+    });
+});
+
+window.upd = (id, st) => update(ref(db, 'pedidos/'+id), {status: st});
+setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+</script>
+</body>
+</html>

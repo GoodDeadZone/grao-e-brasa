@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grão & Brasa – QR Codes das Mesas</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--m:#3d1f0d;--dou:#d4a84b;--car:#c8843a;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Lora',serif;background:#1a1a2e;color:#ddd;min-height:100vh}
+.header{background:#0d0d1a;padding:18px 24px;border-bottom:1px solid #2a2a3a;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.h-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--dou)}
+.h-sub{font-size:.78rem;color:#888;font-style:italic;margin-top:2px}
+.url-bar{background:#12122a;padding:14px 24px;border-bottom:1px solid #2a2a3a;font-size:.82rem;color:#888;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.url-val{color:#aaa;font-family:monospace;font-size:.8rem;word-break:break-all}
+.btn-print{background:var(--car);color:white;border:none;border-radius:10px;padding:10px 20px;font-family:'Playfair Display',serif;font-size:.95rem;cursor:pointer;transition:.2s;}
+.btn-print:hover{background:var(--dou);color:#000}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding:24px}
+.card{background:#0d0d1a;border:1px solid #2a2a3a;border-radius:16px;padding:20px;text-align:center;}
+.card-num{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--dou);margin-bottom:2px}
+.card-rest{font-size:.72rem;color:#666;font-style:italic;margin-bottom:14px}
+.qr-wrap{display:inline-block;background:white;padding:10px;border-radius:10px}
+.card-url{font-size:.58rem;color:#333;margin-top:10px;word-break:break-all;max-width:170px;margin-left:auto;margin-right:auto;line-height:1.4}
+
+@media print{
+  body{background:white;color:black}
+  .header,.url-bar,.no-print{display:none!important}
+  .print-header{display:block!important}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0}
+  .card{background:white;border:1px solid #ccc;border-radius:0;padding:18px;page-break-inside:avoid;break-inside:avoid}
+  .card-num{color:#3d1f0d;font-size:1.3rem}
+  .card-rest{color:#888}
+  .card-url{color:#ccc;font-size:.52rem}
+  .qr-wrap{padding:8px}
+}
+@media screen{.print-header{display:none}}
+.print-header{text-align:center;padding:16px;border-bottom:2px solid #3d1f0d;margin-bottom:6px}
+.print-header h1{font-family:'Playfair Display',serif;font-size:1.5rem;color:#3d1f0d}
+</style>
+</head>
+<body>
+
+<div class="print-header">
+  <h1>GRÃO & BRASA — QR Codes das Mesas</h1>
+  <p>Cozinha Mineira de Raiz · Recorte e plastifique um para cada mesa</p>
+</div>
+
+<div class="header no-print">
+  <div>
+    <div class="h-title">📱 QR Codes — Grão & Brasa</div>
+    <div class="h-sub">12 mesas · Prontos para imprimir</div>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨️ Imprimir Todos</button>
+</div>
+
+<div class="url-bar no-print">
+  <span>🔗 App cliente (Link Oficial):</span>
+  <span class="url-val">https://graoebrasa.netlify.app/grao_brasa_1_CLIENTE.html</span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+// O SEU LINK DEFINITIVO DO NETLIFY
+const BASE = 'https://graoebrasa.netlify.app/grao_brasa_1_CLIENTE.html';
+const TOTAL = 12;
+
+function makeToken(n){ return `mesa_${n}_gb2026`; }
+
+const grid = document.getElementById('grid');
+
+for(let i = 1; i <= TOTAL; i++){
+  const token = makeToken(i);
+  const url = `${BASE}?mesa=${token}`;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-num">🪑 Mesa ${i}</div>
+    <div class="card-rest">Grão & Brasa</div>
+    <div class="qr-wrap" id="qr${i}"></div>
+    <div class="card-url">${url}</div>
+  `;
+  grid.appendChild(card);
+
+  setTimeout(() => {
+    try {
+      new QRCode(document.getElementById('qr' + i), {
+        text: url,
+        width: 160,
+        height: 160,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    } catch(e) {
+      document.getElementById('qr' + i).textContent = 'Erro ao gerar QR';
+    }
+  }, i * 100);
+}
+</script>
+</body>
+</html>
