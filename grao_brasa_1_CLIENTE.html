@@ -1,65 +1,49 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Grão & Brasa – Cardápio Mineiro</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--m:#3d1f0d;--m2:#6b3a1f;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--cr2:#e8d5b0;--vd:#4a6741;--vm:#e74c3c;}
+:root{--m:#3d1f0d;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--cr2:#e8d5b0;--vd:#27ae60;--vm:#e74c3c;--az:#3498db;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100vh;overflow-x:hidden}
 .screen{display:none;min-height:100vh;flex-direction:column}
 .screen.active{display:flex}
-
-/* LOGIN & LOADING */
 #s-loading{background:var(--m);align-items:center;justify-content:center;color:var(--dou);text-align:center}
 #s-login{background:var(--m);align-items:center;justify-content:center;padding:30px}
 .login-box{background:var(--cr);padding:40px 30px;border-radius:24px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.4)}
-
-/* HEADER & TABS */
 .topbar{background:var(--m);padding:13px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
 .tb-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--dou)}
 .delivery-tabs{display:flex;background:var(--m);margin:15px;border-radius:12px;overflow:hidden;border:1px solid var(--car)}
 .tab-btn{flex:1;padding:12px;border:none;background:var(--m);color:white;font-weight:bold;cursor:pointer}
 .tab-btn.active{background:var(--car);color:white}
-
-/* CARDÁPIO */
-.menu-body{padding:0 16px 140px 16px}
+.menu-body{padding:0 16px 180px 16px}
 .section-title{font-family:'Playfair Display';font-size:1.4rem;margin:25px 0 10px;border-bottom:2px solid var(--car);display:inline-block}
 .item-card{background:white;border-radius:18px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 10px rgba(0,0,0,0.05)}
-.item-info{flex:1;padding-right:10px}
-.item-name{font-family:'Playfair Display';font-size:1.1rem;font-weight:bold;margin-bottom:3px}
-.item-desc{font-size:0.75rem;color:#666;line-height:1.2}
-.item-price{color:var(--car);font-weight:bold;margin-top:5px;display:block}
 .btn-add{background:var(--m);color:white;border:none;padding:10px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
-
-/* COMPLEMENTOS */
-.info-box{background:var(--m);color:var(--cr);padding:15px;border-radius:12px;font-size:0.8rem;margin-bottom:15px}
-.info-box ul{margin-left:15px;margin-top:5px}
-
-/* FORMULÁRIO & PAGAMENTO */
-.form-box{background:white;padding:15px;border-radius:15px;margin-top:20px;border:1px solid var(--cr2)}
-input, select, textarea{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid #ccc;font-family:inherit}
-
+#pix-confirm{display:none;background:white;padding:20px;border-radius:18px;margin:20px 0;text-align:center;border:2px solid var(--dou);animation: fadeIn 0.5s;}
 .f-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top, var(--cr) 80%, transparent);z-index:150}
+.summary{display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:8px;padding:0 10px;font-weight:bold}
 .btn-main{background:var(--m);color:var(--dou);border:none;padding:18px;width:100%;border-radius:16px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;justify-content:space-between}
 .btn-main:disabled{background:#999;opacity:0.6}
+@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
 </style>
 </head>
 <body>
 
 <div id="s-loading" class="screen active">
   <h1 style="font-family:'Playfair Display';font-size:2.5rem">Grão & Brasa</h1>
-  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">SABOR DA ROÇA CARREGANDO...</p>
+  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">CARREGANDO...</p>
 </div>
 
 <div id="s-login" class="screen">
   <div class="login-box">
-    <h2 style="font-family:'Playfair Display';margin-bottom:20px">Grão & Brasa</h2>
-    <input type="text" id="in-name" placeholder="Seu nome">
-    <input type="text" id="in-tel" placeholder="Seu Telefone (WhatsApp)" style="margin-top:10px">
-    <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:20px">Ver Cardápio</button>
+    <h2 style="font-family:'Playfair Display';margin-bottom:20px">Identifique-se</h2>
+    <input type="text" id="in-name" placeholder="Seu nome" style="width:100%;padding:15px;border-radius:12px;border:1px solid #ddd;outline:none">
+    <input type="text" id="in-tel" placeholder="Seu Telemóvel" style="width:100%;padding:15px;border-radius:12px;border:1px solid #ddd;outline:none;margin-top:10px">
+    <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:15px">Entrar</button>
   </div>
 </div>
 
@@ -75,68 +59,43 @@ input, select, textarea{width:100%;padding:12px;margin-top:8px;border-radius:8px
   </div>
 
   <div class="menu-body">
-    
-    <div class="info-box">
-      <b>🥘 Todo PF acompanha:</b>
-      <ul>
-        <li>Arroz (Branco ou Pequi), Feijão (Tropeiro ou Tutu)</li>
-        <li>Couve c/ Alho, Farofa de Torresmo e Salada</li>
-      </ul>
+    <div id="pix-confirm">
+        <h3 style="font-family:'Playfair Display';color:var(--m)">Pagamento PIX</h3>
+        <p style="font-size:0.8rem;margin:10px 0">Chave: <b>31999999999</b></p>
+        <button onclick="navigator.clipboard.writeText('31999999999');alert('Copiada!')" style="background:var(--m);color:var(--dou);border:none;padding:10px;border-radius:8px;font-weight:bold">Copiar Chave</button>
     </div>
 
-    <div id="form-delivery" style="display:none" class="form-box">
-        <h4 style="font-family:'Playfair Display'">Endereço de Entrega</h4>
-        <input type="text" id="del-end" placeholder="Rua, Número e Bairro">
-        <input type="text" id="del-ref" placeholder="Ponto de Referência">
+    <div id="form-delivery" style="display:none; background:white; padding:15px; border-radius:15px; margin-bottom:15px; border:1px solid var(--cr2)">
+        <input type="text" id="del-end" placeholder="Morada completa para entrega">
+        <input type="text" id="del-ref" placeholder="Ponto de referência" style="margin-top:10px">
     </div>
 
-    <div class="section-title">Pratos Feitos (PF)</div>
-    
-    <div class="item-card">
-        <div class="item-info">
-            <div class="item-name">PF Simples</div>
-            <div class="item-desc">Escolha 1 carne do dia + todos os acompanhamentos.</div>
-            <span class="item-price">R$ 20,00</span>
-        </div>
-        <button class="btn-add" onclick="add('PF Simples', 20.00)">+</button>
-    </div>
-
-    <div class="item-card">
-        <div class="item-info">
-            <div class="item-name">PF Completo</div>
-            <div class="item-desc">Escolha 2 carnes do dia + todos os acompanhamentos.</div>
-            <span class="item-price">R$ 28,00</span>
-        </div>
-        <button class="btn-add" onclick="add('PF Completo', 28.00)">+</button>
-    </div>
-
-    <div class="info-box" style="background:#fff; color:var(--m); border:1px solid var(--cr2)">
-        <b>🥩 Carnes de Hoje (Variam diariamente):</b>
-        <p style="font-size:0.75rem; margin-top:5px; color:#666">Frango Caipira, Porco na Brasa, Bisteca, Carne Moída, Frango c/ Quiabo, Leitoa, Costelinha ou Opção Vegetariana.</p>
-    </div>
-
-    <div class="section-title">Doces & Sobremesas</div>
+    <div class="section-title">Pratos do Dia</div>
+    <div id="lista-pfs"></div>
+    <div class="section-title">Sobremesas Mineiras</div>
     <div id="lista-doces"></div>
-
     <div class="section-title">Bebidas & Sucos</div>
     <div id="lista-bebidas"></div>
 
-    <div class="form-box">
-        <label style="font-weight:bold;font-size:.9rem">📝 Observações e Carne Escolhida:</label>
-        <textarea id="obs" placeholder="Ex: Carne de Porco, arroz com pequi, sem cebola..." style="height:70px"></textarea>
+    <div style="background:white;padding:15px;border-radius:15px;margin-top:20px;border:1px solid var(--cr2)">
+        <label style="font-weight:bold;font-size:0.8rem">Observações (ex: sem cebola):</label>
+        <textarea id="obs" placeholder="Escreva aqui..." style="width:100%;height:60px;padding:10px;border-radius:8px;border:1px solid #ccc;margin-top:5px;font-family:inherit"></textarea>
         
-        <label style="font-weight:bold;font-size:.9rem;margin-top:15px;display:block">💳 Forma de Pagamento:</label>
-        <select id="sel-pag">
+        <label style="font-weight:bold;font-size:0.8rem;margin-top:10px;display:block">Forma de Pagamento:</label>
+        <select id="sel-pag" style="width:100%;padding:12px;margin-top:5px;border-radius:8px;border:1px solid #ccc">
             <option value="pix">PIX (Pagar agora)</option>
-            <option value="cartao">Cartão (Levamos maquininha)</option>
+            <option value="cartao">Cartão (Levamos a maquininha)</option>
             <option value="dinheiro">Dinheiro</option>
         </select>
     </div>
-
-    <div id="status-pedido" style="margin-top:20px;padding:15px;border-radius:12px;text-align:center;display:none;color:white;font-weight:bold"></div>
+    <div id="status-aviso" style="margin-top:20px;padding:15px;border-radius:12px;text-align:center;display:none;color:white;font-weight:bold"></div>
   </div>
 
   <div class="f-bar">
+    <div id="resumo-precos" style="display:none">
+        <div class="summary"><span>Subtotal:</span> <span id="txt-sub">R$ 0,00</span></div>
+        <div class="summary" id="taxa-linha" style="display:none;color:var(--vm)"><span>Taxa de Entrega:</span> <span>R$ 7,00</span></div>
+    </div>
     <button class="btn-main" id="btn-finalizar" onclick="finalizar()">
       <span>Finalizar Pedido</span>
       <span id="txt-total">R$ 0,00</span>
@@ -156,103 +115,76 @@ const app = initializeApp({
 });
 const db = getDatabase(app);
 
-const doces = [
-    {n:"Pudim de Leite Mineiro", p:8.00, d:"Tradicional e cremoso c/ calda artesanal"},
-    {n:"Doce de Leite c/ Queijo", p:9.00, d:"Queijo meia cura e biscoito de polvilho"},
-    {n:"Canjica com Amendoim", p:8.00, d:"Milho branco, canela e amendoim torrado"},
-    {n:"Bolo de Fubá c/ Goiabada", p:7.00, d:"Quentinho c/ cobertura de goiabada cascão"},
-    {n:"Arroz Doce Cremoso", p:7.00, d:"Com leite condensado, coco e canela"}
-];
-
-const bebidas = [
-    {n:"Suco Natural 400ml", p:7.00, d:"Laranja, Limão, Abacaxi, Goiaba, Manga ou Maracujá"},
-    {n:"Vitamina", p:8.00, d:"Banana com Maçã - 400ml"},
-    {n:"Refrigerante Lata", p:6.00, d:"Coca-Cola, Guaraná, Fanta"},
-    {n:"Água Mineral 500ml", p:4.00, d:"Com ou Sem Gás"},
-    {n:"Café Coado", p:3.00, d:"No bule, quentinho na hora"}
-];
-
-let cart = []; let total = 0; let user = {}; let tipoPedido = 'local'; let caixaAberto = false;
+const TAXA = 7.00;
+let cart = []; let subtotal = 0; let tipoPedido = 'local'; let aberto = false;
 const mesa = new URLSearchParams(window.location.search).get('mesa') || 'Mesa_Balcao';
 
-function renderCards(lista, id) {
-    document.getElementById(id).innerHTML = lista.map(it => `
-        <div class="item-card">
-            <div class="item-info">
-                <div class="item-name">${it.n}</div>
-                <div class="item-desc">${it.d}</div>
-                <span class="item-price">R$ ${it.p.toFixed(2)}</span>
-            </div>
-            <button class="btn-add" onclick="add('${it.n}', ${it.p})">+</button>
-        </div>`).join('');
+const menu = {
+    pfs: [{n:"PF Simples (1 carne)", p:20.00}, {n:"PF Completo (2 carnes)", p:28.00}],
+    doces: [{n:"Pudim de Leite Mineiro", p:8.00}, {n:"Doce de Leite c/ Queijo", p:9.00}, {n:"Canjica c/ Amendoim", p:8.00}, {n:"Bolo de Fubá c/ Goiabada", p:7.00}, {n:"Arroz Doce Cremoso", p:7.00}, {n:"Cocada Mineira", p:6.00}],
+    bebidas: [{n:"Suco Natural 400ml", p:7.00}, {n:"Vitamina (Banana/Maçã)", p:8.00}, {n:"Refrigerante Lata", p:6.00}, {n:"Água Mineral 500ml", p:4.00}, {n:"Café Coado na Hora", p:3.00}]
+};
+
+function render() {
+    const f = (l, id) => document.getElementById(id).innerHTML = l.map(it => `<div class="item-card"><div><b>${it.n}</b><br><span style="color:var(--car);font-weight:bold">R$ ${it.p.toFixed(2)}</span></div><button class="btn-add" onclick="add('${it.n}', ${it.p})">+</button></div>`).join('');
+    f(menu.pfs, 'lista-pfs'); f(menu.doces, 'lista-doces'); f(menu.bebidas, 'lista-bebidas');
 }
 
 onValue(ref(db, 'configuracoes/caixa'), (snap) => {
-    caixaAberto = snap.val() ? snap.val().aberto : false;
-    document.getElementById('btn-finalizar').disabled = !caixaAberto;
-    document.getElementById('status-pedido').style.display = caixaAberto ? 'none' : 'block';
-    if(!caixaAberto) {
-        document.getElementById('status-pedido').style.background = '#e74c3c';
-        document.getElementById('status-pedido').innerText = "🔴 Restaurante Fechado agora.";
-    }
+    aberto = snap.val()?.aberto || false;
+    document.getElementById('btn-finalizar').disabled = !aberto;
+    const s = document.getElementById('status-aviso');
+    if(!aberto) { s.style.display='block'; s.style.background='#e74c3c'; s.innerText="🔴 Restaurante Fechado no momento"; }
+    else s.style.display='none';
 });
 
 window.doLogin = () => {
-    user.nome = document.getElementById('in-name').value;
-    user.tel = document.getElementById('in-tel').value;
-    if(!user.nome || !user.tel) return alert("Identifique-se para pedir!");
-    document.getElementById('s-loading').style.display = 'none';
-    document.getElementById('s-login').style.display = 'none';
-    document.getElementById('s-menu').style.display = 'flex';
-    document.getElementById('mesa-label').innerText = "Mesa: " + mesa.split('_')[1];
-    renderCards(doces, 'lista-doces');
-    renderCards(bebidas, 'lista-bebidas');
+    if(!document.getElementById('in-name').value) return alert("Diga o seu nome!");
+    document.getElementById('s-loading').style.display='none'; document.getElementById('s-login').style.display='none'; document.getElementById('s-menu').style.display='flex';
+    document.getElementById('mesa-label').innerText = "Mesa: " + mesa.split('_')[1]; render();
 };
 
 window.toggleTipo = (t) => {
-    tipoPedido = t;
-    document.getElementById('btn-local').classList.toggle('active', t === 'local');
-    document.getElementById('btn-delivery').classList.toggle('active', t === 'delivery');
-    document.getElementById('form-delivery').style.display = t === 'delivery' ? 'block' : 'none';
+    tipoPedido = t; document.getElementById('btn-local').classList.toggle('active', t==='local'); document.getElementById('btn-delivery').classList.toggle('active', t==='delivery');
+    document.getElementById('form-delivery').style.display = t==='delivery' ? 'block' : 'none'; updTotal();
 };
 
-window.add = (n, p) => {
-    cart.push({nome: n, preco: p});
-    total += p;
-    document.getElementById('txt-total').innerText = "R$ " + total.toFixed(2).replace('.',',');
-};
+window.add = (n, p) => { cart.push({nome: n, preco: p}); subtotal += p; updTotal(); };
+
+function updTotal() {
+    let final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
+    document.getElementById('resumo-precos').style.display = subtotal > 0 ? 'block' : 'none';
+    document.getElementById('txt-sub').innerText = "R$ " + subtotal.toFixed(2).replace('.',',');
+    document.getElementById('taxa-linha').style.display = tipoPedido === 'delivery' ? 'flex' : 'none';
+    document.getElementById('txt-total').innerText = "R$ " + final.toFixed(2).replace('.',',');
+}
 
 window.finalizar = async () => {
-    if(!caixaAberto) return alert("O caixa está fechado!");
-    if(cart.length === 0) return alert("Escolha o seu prato!");
-    
+    if(cart.length === 0) return alert("Carrinho vazio!");
+    const final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
     const pRef = push(ref(db, 'pedidos'));
     await set(pRef, {
-        cliente: user.nome, tel: user.tel, mesa: tipoPedido === 'delivery' ? 'Delivery' : mesa,
-        tipo: tipoPedido, itens: cart, total: total, obs: document.getElementById('obs').value,
-        metodoPag: document.getElementById('sel-pag').value, status: 'aguardando_pagamento',
-        hora: new Date().toISOString(), endereco: document.getElementById('del-end').value || ''
+        cliente: document.getElementById('in-name').value, tel: document.getElementById('in-tel').value,
+        mesa: tipoPedido==='delivery'?'Delivery':mesa, tipo: tipoPedido, itens: cart, total: final, status: 'aguardando_pagamento',
+        obs: document.getElementById('obs').value, metodoPag: document.getElementById('sel-pag').value, hora: new Date().toISOString(),
+        endereco: document.getElementById('del-end').value || ''
     });
-    alert("Pedido enviado! Veja o status abaixo.");
-    cart = []; total = 0;
-    document.getElementById('txt-total').innerText = "R$ 0,00";
-    localStorage.setItem('last_gb', pRef.key);
-    rastrear();
+    if(document.getElementById('sel-pag').value === 'pix') document.getElementById('pix-confirm').style.display='block';
+    localStorage.setItem('gb_id', pRef.key); cart=[]; subtotal=0; updTotal(); rastrear();
 };
 
 function rastrear() {
-    const id = localStorage.getItem('last_gb');
-    if(!id) return;
-    onValue(ref(db, 'pedidos/' + id), (snap) => {
+    const id = localStorage.getItem('gb_id'); if(!id) return;
+    onValue(ref(db, 'pedidos/'+id), (snap) => {
         const p = snap.val(); if(!p) return;
-        const s = document.getElementById('status-pedido');
-        s.style.display = 'block';
-        const cores = { aguardando_pagamento:'#e74c3c', novo:'#f39c12', preparando:'#3498db', pronto:'#27ae60', finalizado:'#2ecc71', cancelado:'#333' };
-        s.style.background = cores[p.status];
-        s.innerText = "STATUS: " + p.status.toUpperCase().replace('_',' ');
+        const s = document.getElementById('status-aviso'); s.style.display='block';
+        const cores = { aguardando_pagamento:'#e74c3c', novo:'#f39c12', preparando:'#3498db', pronto:'#27ae60', em_rota:'#9b59b6', finalizado:'#2ecc71', cancelado:'#333' };
+        const textos = { aguardando_pagamento:'⏳ AGUARDANDO PAGAMENTO', novo:'✅ PAGO / NA COZINHA', preparando:'🔥 NO FOGO', pronto:'🍽️ PRONTO / ENTREGA', em_rota:'🛵 MOTOBOY A CAMINHO', finalizado:'🤎 BOM APETITE!', cancelado:'❌ CANCELADO' };
+        s.style.background = cores[p.status]; s.innerText = textos[p.status];
+        if(p.status !== 'aguardando_pagamento') document.getElementById('pix-confirm').style.display='none';
     });
 }
-window.onload = () => setTimeout(() => { document.getElementById('s-loading').style.display = 'none'; document.getElementById('s-login').style.display = 'flex'; rastrear(); }, 2000);
+setTimeout(()=>document.getElementById('s-loading').style.display='none', 1500);
 </script>
 </body>
 </html>
