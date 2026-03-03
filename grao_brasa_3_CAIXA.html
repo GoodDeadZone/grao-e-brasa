@@ -1,260 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grão & Brasa – Gestão Boss</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<title>Gestão Grão & Brasa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2435;--brd:#2a3045;--dou:#d4a84b;--car:#c8843a;--vd:#27ae60;--am:#f39c12;--az:#3498db;--vm:#e74c3c;}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Lora',serif;background:var(--bg);color:#dde;min-height:100vh}
-
-/* LOGIN ADMINISTRATIVO */
-#s-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg2)}
-.lc{background:var(--bg3);border:1px solid var(--brd);border-radius:20px;padding:40px 32px;width:100%;max-width:400px;text-align:center}
-
-/* DASHBOARD PRINCIPAL */
-#s-main{display:none}
-.topbar{background:var(--bg2);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--brd)}
-.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--brd);overflow-x:auto}
-.tab-btn{flex:1;background:none;border:none;color:#888;padding:15px;font-family:'Playfair Display';cursor:pointer;white-space:nowrap;transition:0.3s}
-.tab-btn.active{color:var(--dou);border-bottom:3px solid var(--car);background:rgba(200,132,58,0.1)}
-
-.tab-content{display:none;padding:20px}
-.tab-content.active{display:block}
-
-/* BLOCOS DE FATURAMENTO (SEU DESIGN ORIGINAL) */
-.rc{background:var(--bg3);border:1px solid var(--brd);border-radius:12px;padding:20px;margin-bottom:15px}
-.rct{color:var(--car);font-family:'Playfair Display';font-size:1.1rem;margin-bottom:15px;border-bottom:1px solid #2a3045;padding-bottom:10px}
-.rs{display:flex;justify-content:space-between;margin-bottom:10px;font-size:1rem}
-.rv{font-weight:900;color:white}
-.rv.d{color:var(--vd);font-size:1.2rem}
-
-/* CARDS DE PEDIDO */
+:root{--bg:#0f1117;--bg2:#161b27;--dou:#d4a84b;--car:#c8843a;--vd:#27ae60;--vm:#e74c3c;--az:#3498db;--brd:#2a3045;}
+body{font-family:'Lora',serif;background:var(--bg);color:#dde;padding:20px}
+.resumo{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px}
+.box{background:var(--bg2);padding:20px;border-radius:12px;text-align:center;border:1px solid var(--brd)}
+.btn{width:100%;padding:12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;color:white;transition:0.3s}
 .card{background:var(--bg2);padding:15px;border-radius:10px;margin-bottom:10px;border-left:5px solid var(--vm)}
-.btn-acao{width:100%;padding:12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;color:white;transition:0.2s}
-
-/* STATUS DO CAIXA */
-.status-caixa{padding:12px;text-align:center;border-radius:8px;margin-bottom:15px;font-weight:bold;font-size:1.1rem}
-.c-aberto{background:rgba(39,174,96,0.1);color:var(--vd);border:1px solid var(--vd)}
-.c-fechado{background:rgba(231,76,60,0.1);color:var(--vm);border:1px solid var(--vm)}
+.status-v{padding:10px;border-radius:8px;text-align:center;font-weight:bold;margin-bottom:15px}
+.aberto{background:rgba(39,174,96,0.1);color:var(--vd);border:1px solid var(--vd)}
+.fechado{background:rgba(231,76,60,0.1);color:var(--vm);border:1px solid var(--vm)}
+.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--brd)}
+.tab{padding:15px;cursor:pointer;color:#888}
+.tab.active{color:var(--dou);border-bottom:2px solid var(--car)}
 </style>
 </head>
 <body>
-
-<div id="s-login">
-  <div class="lc">
-    <h1 style="font-family:'Playfair Display';color:var(--dou);margin-bottom:25px">Grão & Brasa Gestão</h1>
-    <input type="password" id="admin-pass" placeholder="Senha do Administrador" style="width:100%;padding:15px;background:#000;border:1px solid var(--brd);color:white;border-radius:10px;margin-bottom:15px;text-align:center;outline:none">
-    <button onclick="login()" style="width:100%;padding:15px;background:var(--car);color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer">Aceder ao Painel</button>
-  </div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <h1 style="font-family:'Playfair Display';color:var(--dou)">💰 Dashboard Gestão</h1>
+    <div id="visor-caixa" class="status-v fechado">CARREGANDO...</div>
 </div>
 
-<div id="s-main">
-  <div class="topbar">
-    <div style="font-family:'Playfair Display';font-size:1.3rem;color:var(--dou)">Painel de Controlo</div>
-    <div id="relogio" style="font-weight:bold;color:var(--cr2)">00:00:00</div>
-  </div>
+<div style="display:flex;gap:10px;margin-bottom:25px">
+    <button class="btn" style="background:var(--vd)" onclick="setCaixa(true)">🔓 ABRIR TURNO</button>
+    <button class="btn" style="background:var(--vm)" onclick="setCaixa(false)">🔒 FECHAR TURNO</button>
+</div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="tab('t-caixa', this)">💰 Caixa/Turno</button>
-    <button class="tab-btn" onclick="tab('t-mesas', this)">👨‍🍳 Cozinha/Pedidos</button>
-    <button class="tab-btn" onclick="tab('t-graficos', this)">📈 Gráficos</button>
-    <button class="tab-btn" onclick="tab('t-hist', this)">📚 Histórico</button>
-  </div>
+<div class="tabs">
+    <div class="tab active" onclick="show('t-caixa',this)">Caixa</div>
+    <div class="tab" onclick="show('t-graficos',this)">Métricas</div>
+    <div class="tab" onclick="show('t-historico',this)">Histórico</div>
+</div>
 
-  <div id="t-caixa" class="tab-content active">
-    <div id="visor-caixa" class="status-caixa c-fechado">CARREGANDO...</div>
-    
-    <div style="display:flex;gap:10px;margin-bottom:20px">
-        <button class="btn-acao" style="background:var(--vd);margin:0" onclick="setCaixa(true)">🔓 ABRIR TURNO</button>
-        <button class="btn-acao" style="background:var(--vm);margin:0" onclick="setCaixa(false)">🔒 FECHAR TURNO</button>
+<div id="t-caixa">
+    <div class="resumo">
+        <div class="box"><h4>PIX</h4><h2 id="t-pix">R$ 0,00</h2></div>
+        <div class="box"><h4>CARTÃO</h4><h2 id="t-cartao">R$ 0,00</h2></div>
+        <div class="box"><h4>DINHEIRO</h4><h2 id="t-dinheiro">R$ 0,00</h2></div>
+        <div class="box" style="border-color:var(--vd)"><h4>FATURAMENTO</h4><h2 style="color:var(--vd)" id="t-total">R$ 0,00</h2></div>
     </div>
+    <button class="btn" style="background:var(--az);max-width:300px;margin:0 auto;display:block" onclick="salvar()">💾 SALVAR SESSÃO</button>
+    <h3 style="margin-top:30px;color:var(--dou)">⏳ Pagamentos Pendentes</h3>
+    <div id="lista-p"></div>
+</div>
 
-    <div id="res-body">
-        </div>
+<div id="t-graficos" style="display:none">
+    <div style="background:var(--bg2);padding:20px;border-radius:15px;margin-bottom:20px"><canvas id="c-hora"></canvas></div>
+    <div style="background:var(--bg2);padding:20px;border-radius:15px;max-width:400px;margin:auto"><canvas id="c-pizza"></canvas></div>
+</div>
 
-    <button class="btn-acao" style="background:var(--az);margin-top:10px" onclick="salvarSessao()">💾 Guardar Sessão no Histórico</button>
-
-    <h3 style="margin:30px 0 15px;color:var(--dou);border-bottom:1px solid #333;padding-bottom:5px">⏳ Aguardando Pagamento</h3>
-    <div id="lista-pagamentos"></div>
-  </div>
-
-  <div id="t-mesas" class="tab-content">
-      <h3 style="color:var(--az);margin-bottom:15px">🔥 Na Cozinha / Em Entrega</h3>
-      <div id="lista-andamento"></div>
-      <hr style="border:0;border-top:1px solid #333;margin:30px 0">
-      <h3 style="color:var(--vd);margin-bottom:15px">✅ Finalizados (Turno Atual)</h3>
-      <div id="lista-concluidos"></div>
-  </div>
-
-  <div id="t-graficos" class="tab-content">
-      <div class="rc"><canvas id="chartHora"></canvas></div>
-      <div class="rc" style="max-width:400px;margin:auto"><canvas id="chartMetodo"></canvas></div>
-  </div>
-
-  <div id="t-hist" class="tab-content">
-      <div id="lista-historico"></div>
-  </div>
+<div id="t-historico" style="display:none">
+    <div id="lista-h"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getDatabase, ref, onValue, update, set, push } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+const db = getDatabase(initializeApp({databaseURL: "https://grao-e-brasa-ef12e-default-rtdb.firebaseio.com"}));
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBVZof62nwg8DSWiFGWGARbsMwh-AnVCSY",
-    authDomain: "grao-e-brasa-ef12e.firebaseapp.com",
-    databaseURL: "https://grao-e-brasa-ef12e-default-rtdb.firebaseio.com",
-    projectId: "grao-e-brasa-ef12e"
-};
+let cfg = {aberto:false, data:null}; let ativos = 0; let totais = {pix:0, cartao:0, dinheiro:0, total:0};
+let chartH, chartP;
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-let cfg = { aberto: false, data: null };
-let ativosCount = 0;
-let totais = { pix: 0, cartao: 0, dinheiro: 0, total: 0 };
-let graficoHora = null, graficoPizza = null;
-
-// LOGIN
-window.login = () => {
-    if(document.getElementById('admin-pass').value === 'admin123') {
-        document.getElementById('s-login').style.display = 'none';
-        document.getElementById('s-main').style.display = 'block';
-    } else alert("Senha Administrativa Incorreta!");
-};
-
-// SINCRONIZAÇÃO DO ESTADO DO CAIXA
 onValue(ref(db, 'configuracoes/caixa'), (snap) => {
-    cfg = snap.val() || { aberto: false, data: null };
-    const visor = document.getElementById('visor-caixa');
-    visor.className = "status-caixa " + (cfg.aberto ? "c-aberto" : "c-fechado");
-    visor.innerText = cfg.aberto ? "🟢 CAIXA ABERTO" : "🔴 CAIXA FECHADO - PEDIDOS BLOQUEADOS";
+    cfg = snap.val() || {aberto:false};
+    const v = document.getElementById('visor-caixa');
+    v.className = "status-v " + (cfg.aberto ? "aberto" : "fechado");
+    v.innerText = cfg.aberto ? "🟢 TURNO ABERTO" : "🔴 TURNO FECHADO";
 });
 
 window.setCaixa = (abrir) => {
-    if(abrir) {
-        set(ref(db, 'configuracoes/caixa'), { aberto: true, data: new Date().toISOString() });
-    } else {
-        if(ativosCount > 0) return alert("🛑 BLOQUEADO: Finalize os " + ativosCount + " pedidos abertos antes de fechar!");
-        if(confirm("Deseja fechar o turno? Os valores do painel serão zerados.")) {
-            set(ref(db, 'configuracoes/caixa'), { aberto: false, data: null });
-        }
-    }
+    if(!abrir && ativos > 0) return alert("🛑 Erro: Ainda existem "+ativos+" pedidos pendentes! Finalize todos antes de fechar.");
+    set(ref(db, 'configuracoes/caixa'), {aberto:abrir, data:abrir?new Date().toISOString():null});
 };
 
-// PROCESSAMENTO DE PEDIDOS E MÉTRICAS
 onValue(ref(db, 'pedidos'), (snap) => {
-    const dados = snap.val();
-    const list = dados ? Object.keys(dados).map(k => ({id: k, ...dados[k]})) : [];
-    
-    // Filtra apenas o que aconteceu depois da abertura do caixa
+    const list = snap.val() ? Object.keys(snap.val()).map(k=>({id:k,...snap.val()[k]})) : [];
     const sessao = list.filter(p => cfg.aberto && p.hora && new Date(p.hora) >= new Date(cfg.data));
+    ativos = sessao.filter(p => p.status !== 'finalizado' && p.status !== 'cancelado').length;
     
-    ativosCount = sessao.filter(p => p.status !== 'finalizado' && p.status !== 'cancelado').length;
-    totais = { pix:0, cartao:0, dinheiro:0, total:0 };
-    let horasData = Array(24).fill(0);
-
-    document.getElementById('lista-pagamentos').innerHTML = '';
-    document.getElementById('lista-andamento').innerHTML = '';
-    document.getElementById('lista-concluidos').innerHTML = '';
-
+    totais = {pix:0, cartao:0, dinheiro:0, total:0};
+    let hData = Array(24).fill(0);
+    document.getElementById('lista-p').innerHTML = '';
+    
     sessao.forEach(p => {
-        if(p.status === 'aguardando_pagamento') {
-            document.getElementById('lista-pagamentos').innerHTML += `
-                <div class="card">
-                    <b style="font-size:1.1rem">${p.mesa.replace('_',' ')} - R$ ${p.total.toFixed(2)}</b><br>
-                    <small>Cliente: ${p.cliente} | Pag: ${p.metodoPag.toUpperCase()}</small>
-                    <button class="btn-acao" style="background:var(--vd)" onclick="upd('${p.id}','novo')">Confirmar Recebimento</button>
-                    <button class="btn-acao" style="background:var(--vm);padding:5px;margin-top:5px" onclick="if(confirm('Cancelar?')) upd('${p.id}','cancelado')">Cancelar Pedido</button>
-                </div>`;
-        } else if (p.status !== 'cancelado') {
-            totais.total += p.total;
-            totais[p.metodoPag] += p.total;
-            horasData[new Date(p.hora).getHours()] += p.total;
-            
-            const area = p.status === 'finalizado' ? 'lista-concluidos' : 'lista-andamento';
-            document.getElementById(area).innerHTML += `
-                <div class="card" style="border-left-color: ${p.status==='finalizado'?'var(--vd)':'var(--az)'}">
-                    <b>${p.mesa.replace('_',' ')} - ${p.status.toUpperCase()}</b><br>
-                    <small>${p.itens ? p.itens.map(i=>i.nome).join(', ') : ''}</small>
-                    ${p.status==='pronto' ? `<button class="btn-acao" style="background:var(--vd)" onclick="upd('${p.id}','finalizado')">Concluir/Entregue</button>` : ''}
-                </div>`;
+        if(p.status==='aguardando_pagamento') {
+            document.getElementById('lista-p').innerHTML += `<div class="card">
+                <b>${p.mesa.replace('_',' ')} - R$ ${p.total.toFixed(2)}</b><br><small>${p.cliente} | Pag: ${p.metodoPag.toUpperCase()}</small>
+                <button class="btn" style="background:var(--vd);margin-top:10px" onclick="upd('${p.id}','novo')">Confirmar Recebimento</button>
+            </div>`;
+        } else if(p.status!=='cancelado') {
+            totais.total += p.total; totais[p.metodoPag] += p.total;
+            hData[new Date(p.hora).getHours()] += p.total;
         }
     });
 
-    renderFinanceiro();
-    updateCharts(horasData, totais);
+    document.getElementById('t-pix').innerText = `R$ ${totais.pix.toFixed(2)}`;
+    document.getElementById('t-cartao').innerText = `R$ ${totais.cartao.toFixed(2)}`;
+    document.getElementById('t-dinheiro').innerText = `R$ ${totais.dinheiro.toFixed(2)}`;
+    document.getElementById('t-total').innerText = `R$ ${totais.total.toFixed(2)}`;
+    updCharts(hData);
 });
 
-function renderFinanceiro() {
-    document.getElementById('res-body').innerHTML = `
-        <div class="rc">
-            <div class="rct">📊 Resumo do Turno Atual</div>
-            <div class="rs"><span>📱 PIX</span><span class="rv">R$ ${totais.pix.toFixed(2).replace('.',',')}</span></div>
-            <div class="rs"><span>💳 Cartão</span><span class="rv">R$ ${totais.cartao.toFixed(2).replace('.',',')}</span></div>
-            <div class="rs"><span>💵 Dinheiro</span><span class="rv">R$ ${totais.dinheiro.toFixed(2).replace('.',',')}</span></div>
-            <div class="rs" style="margin-top:10px;border-top:1px solid #333;padding-top:10px">
-                <span style="color:var(--vd);font-weight:bold">FATURAMENTO</span>
-                <span class="rv d">R$ ${totais.total.toFixed(2).replace('.',',')}</span>
-            </div>
-        </div>`;
-}
-
-function updateCharts(hData, tData) {
-    if(!document.getElementById('chartHora')) return;
-    if(!graficoHora) {
-        graficoHora = new Chart(document.getElementById('chartHora'), {
-            type: 'line',
-            data: { labels: Array.from({length:24},(_,i)=>i+'h'), datasets: [{label:'Vendas/Hora', data:hData, borderColor: '#d4a84b', tension:0.3}] },
-            options: { responsive: true, scales: { y: { beginAtZero: true } } }
-        });
-        graficoPizza = new Chart(document.getElementById('chartMetodo'), {
-            type: 'doughnut',
-            data: { labels:['Pix','Cartão','Dinheiro'], datasets: [{data:[tData.pix, tData.cartao, tData.dinheiro], backgroundColor:['#3498db','#9b59b6','#27ae60']}] }
-        });
+function updCharts(hData){
+    if(!chartH){
+        chartH = new Chart(document.getElementById('c-hora'), {type:'line', data:{labels:Array.from({length:24},(_,i)=>i+'h'), datasets:[{label:'Vendas R$', data:hData, borderColor:'#d4a84b', tension:0.3}]}});
+        chartP = new Chart(document.getElementById('c-pizza'), {type:'doughnut', data:{labels:['Pix','Cartão','Dinheiro'], datasets:[{data:[totais.pix, totais.cartao, totais.dinheiro], backgroundColor:['#3498db','#9b59b6','#27ae60']}]}});
     } else {
-        graficoHora.data.datasets[0].data = hData;
-        graficoPizza.data.datasets[0].data = [tData.pix, tData.cartao, tData.dinheiro];
-        graficoHora.update(); graficoPizza.update();
+        chartH.data.datasets[0].data = hData; chartH.update();
+        chartP.data.datasets[0].data = [totais.pix, totais.cartao, totais.dinheiro]; chartP.update();
     }
 }
 
-window.upd = (id, st) => update(ref(db, 'pedidos/'+id), {status: st});
-
-window.salvarSessao = () => {
-    if(totais.total === 0) return alert("Não há vendas para salvar!");
-    push(ref(db, 'fechamentos'), { data: new Date().toISOString(), dia: new Date().toLocaleDateString(), ...totais });
-    alert("Sessão guardada no histórico!");
-};
-
-// HISTÓRICO
 onValue(ref(db, 'fechamentos'), (snap) => {
-    const dados = snap.val();
-    let html = '<h3 style="color:var(--dou);margin-bottom:15px">📚 Registos Anteriores</h3>';
-    if(dados) {
-        Object.keys(dados).reverse().forEach(k => {
-            const s = dados[k];
-            html += `<div class="rc" style="border-left:4px solid var(--dou)">
-                <b>${s.dia} - ${new Date(s.data).toLocaleTimeString()}</b><br>
-                <small>Total: R$ ${s.total.toFixed(2)} (P:${s.pix} C:${s.cartao} D:${s.dinheiro})</small>
-            </div>`;
-        });
-    } else html += '<p style="color:#666">Nenhum histórico encontrado.</p>';
-    document.getElementById('lista-historico').innerHTML = html;
+    const d = snap.val(); let h = '';
+    if(d) Object.keys(d).reverse().forEach(k => {
+        const s = d[k]; h += `<div class="box" style="margin-bottom:10px;text-align:left"><b>${s.dia}</b> - Total: R$ ${s.total.toFixed(2)}</div>`;
+    });
+    document.getElementById('lista-h').innerHTML = h || 'Sem histórico.';
 });
 
-window.tab = (id, btn) => {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
+window.upd = (id, s) => update(ref(db, 'pedidos/'+id), {status: s});
+window.salvar = () => { push(ref(db, 'fechamentos'), { data: new Date().toISOString(), dia: new Date().toLocaleDateString(), ...totais }); alert("Guardado!"); };
+window.show = (id, el) => {
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active');
+    ['t-caixa','t-graficos','t-historico'].forEach(t=>document.getElementById(t).style.display='none');
+    document.getElementById(id).style.display='block';
 };
-
-setInterval(() => document.getElementById('relogio').innerText = new Date().toLocaleTimeString(), 1000);
 </script>
 </body>
 </html>
