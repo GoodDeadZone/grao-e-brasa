@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Grão & Brasa – Cardápio Mineiro</title>
+<title>Grão & Brasa – Cardápio</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--m:#3d1f0d;--car:#c8843a;--dou:#d4a84b;--cr:#f5ead6;--vd:#27ae60;--vm:#e74c3c;}
@@ -18,6 +18,7 @@ body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100
 .tab-btn{flex:1;padding:12px;border:none;background:var(--m);color:white;font-weight:bold;cursor:pointer}
 .tab-btn.active{background:var(--car)}
 .menu-body{padding:0 16px 160px 16px}
+.section-title{font-family:'Playfair Display';font-size:1.4rem;margin:25px 0 10px;border-bottom:2px solid var(--car);display:inline-block}
 .item-card{background:white;border-radius:18px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 10px rgba(0,0,0,0.05)}
 .f-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top, var(--cr) 80%, transparent);z-index:150}
 .btn-main{background:var(--m);color:var(--dou);border:none;padding:18px;width:100%;border-radius:16px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;display:flex;justify-content:space-between}
@@ -27,11 +28,11 @@ body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100
 
 <div id="s-loading" class="screen active">
   <h1 style="font-family:'Playfair Display';font-size:2.5rem">Grão & Brasa</h1>
-  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">CARREGANDO...</p>
+  <p style="letter-spacing:3px;font-size:.7rem;margin-top:10px;opacity:.7">CARREGANDO CARDÁPIO...</p>
 </div>
 
 <div id="s-login" class="screen">
-  <div class="login-box" style="background:var(--cr);padding:40px 30px;border-radius:24px;text-align:center">
+  <div style="background:var(--cr);padding:40px 30px;border-radius:24px;text-align:center;width:100%;max-width:360px">
     <h2 style="font-family:'Playfair Display';margin-bottom:20px">Identifique-se</h2>
     <input type="text" id="in-name" placeholder="Seu nome" style="width:100%;padding:15px;border-radius:12px;border:1px solid #ddd;outline:none">
     <button onclick="doLogin()" style="width:100%;padding:15px;background:var(--m);color:var(--dou);border:none;border-radius:12px;font-weight:700;margin-top:15px">Entrar</button>
@@ -39,17 +40,26 @@ body{font-family:'Lora',serif;background:var(--cr);color:var(--m);min-height:100
 </div>
 
 <div id="s-menu" class="screen">
-  <div class="topbar"><div style="font-family:'Playfair Display';color:var(--dou)">Grão & Brasa</div><div id="mesa-label" style="color:white;font-size:.8rem;background:var(--car);padding:4px 10px;border-radius:8px">Mesa --</div></div>
+  <div class="topbar"><div style="font-family:'Playfair Display';color:var(--dou);font-weight:900">Grão & Brasa</div><div id="mesa-label" style="color:white;font-size:.8rem;background:var(--car);padding:4px 10px;border-radius:8px">Mesa --</div></div>
   <div class="delivery-tabs"><button class="tab-btn active" id="btn-local" onclick="toggleTipo('local')">No Restaurante</button><button class="tab-btn" id="btn-delivery" onclick="toggleTipo('delivery')">Delivery</button></div>
   <div class="menu-body">
-    <div id="form-delivery" style="display:none;background:white;padding:15px;border-radius:15px;margin-bottom:15px;border:1px solid #e8d5b0"><input type="text" id="del-end" placeholder="Endereço completo"></div>
-    <div style="font-family:'Playfair Display';font-size:1.4rem;margin:20px 0 10px;border-bottom:2px solid var(--car);display:inline-block">Pratos do Dia</div>
+    <div id="form-delivery" style="display:none;background:white;padding:15px;border-radius:15px;margin-bottom:15px;border:1px solid #e8d5b0"><input type="text" id="del-end" placeholder="Endereço Completo"></div>
+    
+    <div style="background:var(--m);color:var(--cr);padding:15px;border-radius:12px;font-size:0.8rem;margin-bottom:20px">
+        <b>🥘 Acompanhamentos do PF:</b> Arroz (branco/pequi), Feijão (tropeiro/tutu), Couve com alho, Farofa de torresmo e Salada[cite: 5, 6].
+    </div>
+
+    <div class="section-title">Pratos Feitos (PF) [cite: 3]</div>
     <div id="lista-pfs"></div>
-    <div style="font-family:'Playfair Display';font-size:1.4rem;margin:20px 0 10px;border-bottom:2px solid var(--car);display:inline-block">Sobremesas</div>
+    <div class="section-title">Doces & Sobremesas [cite: 16]</div>
     <div id="lista-doces"></div>
-    <div style="font-family:'Playfair Display';font-size:1.4rem;margin:20px 0 10px;border-bottom:2px solid var(--car);display:inline-block">Bebidas</div>
+    <div class="section-title">Sucos & Bebidas [cite: 20]</div>
     <div id="lista-bebidas"></div>
-    <div style="background:white;padding:15px;border-radius:15px;margin-top:20px"><textarea id="obs" placeholder="Observações (carne escolhida, sem cebola...)" style="width:100%;height:60px;padding:10px;border-radius:8px;border:1px solid #ccc"></textarea></div>
+
+    <div style="background:white;padding:15px;border-radius:15px;margin-top:20px">
+        <label style="font-weight:bold;font-size:0.8rem">Observações (Carne escolhida, sem cebola...):</label>
+        <textarea id="obs" placeholder="Escreva aqui..." style="width:100%;height:60px;padding:10px;border-radius:8px;border:1px solid #ccc;margin-top:5px"></textarea>
+    </div>
   </div>
   <div class="f-bar"><button class="btn-main" id="btn-finalizar" onclick="finalizar()"><span>Finalizar Pedido</span><span id="txt-total">R$ 0,00</span></button></div>
 </div>
@@ -66,9 +76,18 @@ let cart = []; let subtotal = 0; let tipoPedido = 'local';
 const mesa = new URLSearchParams(window.location.search).get('mesa') || 'Mesa_Balcao';
 
 const menu = {
-    pfs: [{n:"PF Simples (1 carne)", p:20.00}, {n:"PF Completo (2 carnes)", p:28.00}],
-    doces: [{n:"Pudim de Leite Mineiro", p:8.00}, {n:"Doce de Leite c/ Queijo", p:9.00}, {n:"Canjica c/ Amendoim", p:8.00}, {n:"Bolo de Fubá c/ Goiabada", p:7.00}, {n:"Arroz Doce Cremoso", p:7.00}, {n:"Cocada Mineira", p:6.00}],
-    bebidas: [{n:"Suco Natural 400ml", p:7.00}, {n:"Vitamina 400ml", p:9.00}, {n:"Limonada Suíça", p:10.00}, {n:"Refrigerante Lata", p:5.00}, {n:"Água Mineral", p:3.00}, {n:"Café Coado na Hora", p:4.00}, {n:"Café com Leite", p:6.00}]
+    pfs: [{n:"PF Simples (1 carne)", p:20.00}, {n:"PF Completo (2 carnes)", p:28.00}], [cite: 17, 18]
+    doces: [
+        {n:"Pudim de Leite Mineiro", p:8.00}, {n:"Doce de Leite c/ Queijo", p:9.00}, [cite: 19]
+        {n:"Canjica c/ Amendoim", p:8.00}, {n:"Bolo de Fubá c/ Goiabada", p:7.00}, [cite: 19]
+        {n:"Arroz Doce Cremoso", p:7.00}, {n:"Cocada Mineira", p:6.00} [cite: 19]
+    ],
+    bebidas: [
+        {n:"Suco Natural 400ml", p:7.00}, {n:"Vitamina 400ml", p:9.00}, [cite: 22]
+        {n:"Limonada Suíça", p:10.00}, {n:"Café Coado na Hora", p:4.00}, [cite: 22]
+        {n:"Café com Leite", p:6.00}, {n:"Refrigerante Lata", p:5.00}, [cite: 22]
+        {n:"Água Mineral", p:3.00} [cite: 22]
+    ]
 };
 
 function render() {
@@ -78,7 +97,7 @@ function render() {
 
 window.doLogin = () => {
     if(!document.getElementById('in-name').value) return alert("Diga o seu nome!");
-    document.getElementById('s-loading').style.display='none'; document.getElementById('s-login').style.display='none'; document.getElementById('s-menu').style.display='flex';
+    document.getElementById('s-login').style.display='none'; document.getElementById('s-menu').style.display='flex';
     document.getElementById('mesa-label').innerText = "Mesa: " + mesa.split('_')[1]; render();
 };
 
@@ -96,12 +115,12 @@ function updTotal() {
 
 window.finalizar = async () => {
     if(cart.length === 0) return alert("Escolha o seu prato!");
-    const final = (tipoPedido === 'delivery') ? (subtotal + TAXA) : subtotal;
     const pRef = push(ref(db, 'pedidos'));
-    await set(pRef, { cliente: document.getElementById('in-name').value, mesa: tipoPedido==='delivery'?'Delivery':mesa, itens: cart, total: final, status: 'aguardando_pagamento', obs: document.getElementById('obs').value, hora: new Date().toISOString() });
+    await set(pRef, { cliente: document.getElementById('in-name').value, mesa: tipoPedido==='delivery'?'Delivery':mesa, itens: cart, total: (tipoPedido==='delivery'?subtotal+TAXA:subtotal), status: 'aguardando_pagamento', obs: document.getElementById('obs').value, hora: new Date().toISOString() });
     alert("Pedido enviado!"); cart=[]; subtotal=0; updTotal();
 };
-setTimeout(()=>document.getElementById('s-loading').style.display='none', 1500);
+
+setTimeout(()=> { document.getElementById('s-loading').style.display='none'; document.getElementById('s-login').style.display='flex'; }, 1500);
 </script>
 </body>
 </html>
